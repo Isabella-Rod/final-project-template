@@ -1,42 +1,25 @@
 <?php
 
-namespace app\core;
+//require our files, remember should be relative to index.php
+require '../app/core/Router.php';
+require_once "../app/models/Model.php";
+require_once "../app/models/User.php";
+require_once "../app/models/Project.php"; 
+require_once "../app/controllers/Controller.php";
+require_once "../app/controllers/UserController.php";
+require_once "../app/controllers/ProjectsController.php";
+require_once "../app/controllers/MainController.php";
 
-use app\controllers\MainController;
-use app\controllers\UserController;
 
-class Router {
-    public $urlArray;
+//set up env variables
+$env = parse_ini_file('../.env');
 
-    function __construct()
-    {
-        $this->urlArray = $this->routeSplit();
-        $this->handleMainRoutes();
-        $this->handleUserRoutes();
-    }
+define('DBNAME', $env['DBNAME']);
+define('DBHOST', $env['DBHOST']);
+define('DBUSER', $env['DBUSER']);
+define('DBPASS', $env['DBPASS']);
+define('DBDRIVER', '');
 
-    protected function routeSplit() {
-        $removeQueryParams = strtok($_SERVER["REQUEST_URI"], '?');
-        return explode("/", $removeQueryParams);
-    }
+//set up other configs
+define('DEBUG', true);
 
-    protected function handleMainRoutes() {
-        if ($this->urlArray[1] === '' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-            $mainController = new MainController();
-            $mainController->homepage();
-        }
-    }
-
-    protected function handleUserRoutes() {
-        if ($this->urlArray[1] === 'users' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-            $userController = new UserController();
-            $userController->usersView();
-        }
-
-        //give json/API requests a api prefix
-        if ($this->urlArray[1] === 'api' && $this->urlArray[2] === 'users' && $_SERVER['REQUEST_METHOD'] === 'GET') {
-            $userController = new UserController();
-            $userController->getUsers();
-        }
-    }
-}

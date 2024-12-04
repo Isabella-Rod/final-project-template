@@ -5,13 +5,7 @@ namespace app\models;
 use PDO;
 
 class Project {
-    private $env;
-
-    public function __construct($env) {
-        $this->env = $env;
-    }
-
-
+    
     private function connect() {
         try {
             $dsn = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=utf8mb4";
@@ -28,11 +22,11 @@ class Project {
         }
     }
 
-
-
     public function getAll() {
         $query = "SELECT * FROM projects";
-        return $this->query($query);
+        $pdo = $this->connect();
+        $stmt = $pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function create($title, $description, $technologies, $link, $imageName) {

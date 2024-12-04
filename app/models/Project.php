@@ -14,18 +14,20 @@ class Project {
 
     private function connect() {
         try {
-            $dsn = $this->env['DB_DSN'];
-            $user = $this->env['DB_USER'];
-            $pass = $this->env['DB_PASS'];
-
-            $pdo = new PDO($dsn, $user, $pass);
+            $dsn = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=utf8mb4";
+            $pdo = new PDO($dsn, DBUSER, DBPASS);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $pdo;
         } catch (\PDOException $e) {
-            error_log("Database connection failed: " . $e->getMessage());
-            die("Unable to connect to the database. Please contact support.");
+            if (defined('DEBUG') && DEBUG) {
+                die("Database connection failed: " . $e->getMessage());
+            } else {
+                error_log("Database connection failed: " . $e->getMessage());
+                die("Unable to connect to the database. Please contact support.");
+            }
         }
     }
+
 
 
     public function getAll() {

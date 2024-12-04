@@ -8,12 +8,12 @@ class ProjectsController {
     
 
     public function index() {
-        global $env;
+        header('Content-Type: application/json');
 
-        $projectModel = new Project($env);
+        $projectModel = new Project();
         $projects = $projectModel->getAll();
 
-        require 'public/assets/views/main/projects.html';
+        echo json_encode($projects);
     }
 
     public function create() {

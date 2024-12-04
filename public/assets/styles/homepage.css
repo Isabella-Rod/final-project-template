@@ -1,3 +1,462 @@
-p {
-    color: blue;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bodyFont: 'Montserrat', sans-serif; 
+    --headerFont: 'Poppins', sans-serif; 
+    --fontSize: 16px; 
+    --color-text-primary: hsl(172, 95%, 18%, 1); 
+    --background-color: hsl(36, 31%, 90%);
+    --nav-hover-color: hsla(0, 0%, 100%, .5); 
+    --card-bg-color: #ffffff; 
+    --card-border-color: #ddd; 
+    --card-shadow: rgba(0, 0, 0, 0.1); 
+    --text-secondary: #6c757d; 
+    --footer-text-color: #95a5a6;
+}
+
+body, html {
+    font-family: var(--bodyFont);
+    color: var(--color-text-primary);
+    background-color: var(--background-color);
+    position: relative;
+    transition: color 0.2s linear, background-color 0.2s linear; 
+    margin: 0; 
+    height: 100%; 
+}
+
+.wrapper {
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100vh; 
+}
+
+.main-content { 
+    flex: 1; 
+}
+
+/* Navigation Bar */
+
+.navbar {
+    display: flex; 
+    justify-content: center; 
+    padding: 40px; 
+    margin-top: 10px; 
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 20px; 
+}
+
+.navbar ul li {
+    font-family: var(--bodyFont); 
+    font-weight: 400; 
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: var(--color-text-primary); 
+    font-size: 14px; 
+    padding: 5px 12px; 
+    border-radius: 15px;  
+}
+
+.navbar ul li a:hover {
+    color: var(--color-text-primary); 
+    background-color: var(--nav-hover-color); 
+}
+
+.navbar ul li a.active {
+    font-weight: bold;
+    background-color: var(--nav-hover-color);
+    color: var(--color-text-primary);
+}
+
+/* Homepage */
+
+.home {
+    text-align: center; 
+}
+
+.home-content { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 70vh; 
+}
+
+.home-content h1 {
+    font-family: var(--headerFont);
+    font-size: 3.5rem; 
+    color: var(--color-text-primary); 
+    margin-top: 20px;  
+    line-height: 1.2; 
+}
+
+
+/* Projects */
+.projects-header {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px 0;
+}
+
+.projects-header h1 {
+    font-family: var(--headerFont);
+    font-size: 3rem;
+    color: var(--color-text-primary);
+}
+
+/* Projects Section */
+.projects-main {
+    padding: 20px;
+}
+
+.projects-section h2 {
+    font-family: var(--headerFont);
+    font-size: 2.5rem;
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Projects Grid */
+.projects-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.project {
+    background: var(--card-bg-color);
+    padding: 20px;
+    border: 1px solid var(--card-border-color);
+    border-radius: 5px;
+    text-align: center;
+    width: calc(33% - 20px); /* 3 columns with spacing */
+    box-shadow: 0 4px 10px var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px var(--card-shadow);
+}
+
+.project h3 {
+    font-family: var(--headerFont);
+    font-size: 1.5rem;
+    color: var(--color-text-primary);
+    margin-bottom: 10px;
+}
+
+.project p {
+    font-family: var(--bodyFont);
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* About Page */
+.about {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding: 50px 20px;
+    min-height: 100vh;
+}
+
+/* Profile container for layout */
+.profile-container {
+    display: flex;
+    align-items: center;
+    max-width: 1000px;
+    gap: 40px;
+    flex-wrap: wrap; 
+}
+
+.image-wrapper {
+    flex: 1; 
+    max-width: 300px; 
+    display: flex; 
+    justify-content: center; 
+}
+
+.profile-image {
+    width: 250px; 
+    height: 250px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid #f2e9e4; 
+}
+
+.profile-text {
+    flex: 2; /* Ensure the text takes the remaining space */
+    text-align: left;
+}
+
+.profile-text h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: var(--color-text-primary); /* Dark text */
+}
+
+.profile-text h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--color-text-primary);
+    line-height: 1.4;
+}
+
+.profile-text p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .image-wrapper {
+        max-width: 100%; 
+    }
+
+    .profile-text {
+        text-align: center;
+    }
+}
+
+/* Contact Page */
+.contact {
+    text-align: center;
+    padding: 20px;
+    display: flex; 
+    align-items: center; 
+    flex-direction: column; 
+}
+
+.contact h2 {
+    font-family: var(--headerFont);
+    font-size: 2.5rem;
+    color: var(--color-text-primary);
+    margin-bottom: 20px;
+}
+
+.contact form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.contact input,
+.contact textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--card-border-color);
+    border-radius: 5px;
+    font-family: var(--bodyFont);
+    font-size: 1rem;
+    max-width: 600px; 
+}
+
+.contact button {
+    padding: 10px 20px;
+    background-color: var(--color-text-primary);
+    color: var(--card-bg-color);
+    border: none;
+    border-radius: 5px;
+    font-family: var(--headerFont);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.contact button:hover {
+    background: hsl(173, 95%, 20%);
+}
+
+/* ChatGPT */ 
+.chat-widget {
+    background: hsl(36, 31%, 90%);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative; 
+}
+
+.contact, .chat-widget { 
+    margin: 0 auto; 
+    max-width: 600px; 
+    width: 100%; 
+}
+
+.chat-avatar img {
+    width: 40px; /* Set a consistent size for the avatar */
+    height: 40px;
+    border-radius: 50%; /* Makes the avatar circular */
+    object-fit: cover; /* Ensures the image doesn't distort */
+    margin-right: 10px; /* Adds spacing between the avatar and the text */
+    border: 2px solid white; /* Optional: Adds a white border around the avatar */
+}
+
+.chat-header {
+    background: hsl(173, 95%, 18%);
+    color: white;
+    padding: 15px;
+    display: flex; 
+    align-items: center; 
+}
+
+.chat-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.chat-info h3 {
+    font-size: 1rem;
+    margin: 0;
+}
+
+.chat-info p {
+    font-size: 0.85rem;
+    margin: 0;
+    opacity: 0.8;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.chat-messages {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 300px; 
+}
+
+.chat-bubble {
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.chat-bubble.bot {
+    background: hsl(36, 31%, 90%);
+    color: hsl(173, 95%, 18%);
+    align-self: flex-start;
+    background: rgb(234, 234, 230); 
+}
+
+.chat-bubble.user {
+    background: hsl(173, 95%, 18%);
+    color: white;
+    align-self: flex-end;
+    margin: 20px;  
+}
+
+.chat-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.chat-option {
+    background: none;
+    border: 1px solid hsl(173, 95%, 18%);
+    border-radius: 25px;
+    color: hsl(173, 95%, 18%);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    background: rgb(234, 234, 230); 
+}
+
+.chat-option:hover {
+    background: hsl(173, 95%, 18%);
+    color: white;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background: white;
+}
+
+.chat-input textarea {
+    flex-grow: 1;
+    resize: none;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 5px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+.chat-input button {
+    background: hsl(173, 95%, 18%);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.chat-input button:hover {
+    background: hsl(173, 95%, 20%);
+}
+
+
+/* Footer */
+.site-footer {
+    display: flex; 
+    width: 100%; 
+    text-align: center; 
+    padding: 30px; 
+    justify-content: space-around; 
+    position: relative;
+    align-items: center;  
+}
+
+.site-footer a {
+    text-decoration: none; 
+    margin: 0 10px; 
+    font-size: 16px;
+    transition: color 0.3s;
+    color: hsl(173, 95%, 20%);
+}
+
+.site-footer a:hover {
+    color: hsl(173, 95%, 20%);
 }

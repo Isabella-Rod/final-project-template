@@ -8,13 +8,19 @@ class ProjectsController {
     
 
     public function index() {
-        header('Content-Type: application/json');
-
         $projectModel = new Project();
-        $projects = $projectModel->getAll();
+        $projects = $projectModel->getAll(); // Fetch projects from the database
 
-        echo json_encode($projects);
+        // Define the path to the HTML file
+        $filePath = __DIR__ . '/../../public/assets/views/main/projects.html';
+        if (!file_exists($filePath)) {
+            die("The file $filePath does not exist.");
+        }
+
+        // Load the HTML file
+        include $filePath;
     }
+
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

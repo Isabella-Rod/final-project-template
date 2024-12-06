@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const projectsContainer = document.getElementById('projects-container');
 
-    // Fetch projects from the backend
     const fetchProjects = async () => {
         try {
             const response = await fetch('/controllers/ProjectController.php');
             const projects = await response.json();
-            // Render projects
             projectsContainer.innerHTML = projects
                 .map(project => `
                     <div class="project">

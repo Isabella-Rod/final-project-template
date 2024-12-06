@@ -5,22 +5,19 @@ namespace app\controllers;
 use app\models\Project;
 
 class ProjectsController {
-    
 
     public function index() {
         $projectModel = new Project();
-        $projects = $projectModel->getAll(); // Fetch projects from the database
-
-        // Define the path to the HTML file
-        $filePath = __DIR__ . '/../../public/assets/views/main/projects.html';
-        if (!file_exists($filePath)) {
-            die("The file $filePath does not exist.");
-        }
-
-        // Load the HTML file
-        include $filePath;
+        $projects = $projectModel->getAll(); 
+    
+        error_log("Fetched Projects: " . json_encode($projects));
+    
+        header('Content-Type: application/json');
+    
+        echo json_encode($projects);
+    
+        exit;
     }
-
 
     public function create() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -32,14 +29,12 @@ class ProjectsController {
 
             $error = '';
 
-            // Validate and move the uploaded file
             if ($this->validateImage($image)) {
                 $uploadPath = 'uploads/' . $image['name'];
                 if (move_uploaded_file($image['tmp_name'], $uploadPath)) {
                     $projectModel = new Project();
                     $projectModel->create($title, $description, $technologies, $link, $image['name']);
                     
-                    // Redirect to the projects page after successful creation
                     header("Location: /projects");
                     exit;
                 } else {
@@ -49,33 +44,57 @@ class ProjectsController {
                 $error = "Invalid image file.";
             }
 
-            // Handle errors
             if ($error) {
-                // Log the error for debugging
                 error_log("Error creating project: $error");
-                
-                // Optionally pass the error to the view for user feedback
             }
         }
 
-        // Load the view for creating a project
         require 'views/projects/create.php';
     }
 
     private function validateImage($file) {
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-        $maxSize = 2 * 1024 * 1024; // 2MB
+        $maxSize = 2 * 1024 * 1024; 
 
-        // Check file type
         if (!in_array($file['type'], $allowedTypes)) {
             return false;
         }
 
-        // Check file size
         if ($file['size'] > $maxSize) {
             return false;
         }
-
         return true;
     }
+
+    public function renderProjectsPage() {
+        $filePath = __DIR__ . '/../../public/assets/views/main/projects.php';
+        if (!file_exists($filePath)) {
+            die("The file $filePath does not exist.");
+        }
+    
+        include $filePath;
+    }
+
+    public function renderExclusiveProjects() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $projectModel = new Project();
+        $projects = $projectModel->getExclusive();
+
+        include __DIR__ . '/../../public/assets/views/main/exclusiveprojects.php';
+    }
+
+    public function testDatabase() {
+        $projectModel = new \app\models\Project();
+        $projectModel->testConnection();
+    }
+    
+    
 }

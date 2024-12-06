@@ -3,6 +3,7 @@ require '../app/core/setup.php';
 use app\core\Router;
 use app\controllers\ProjectsController;
 use app\controllers\MainController;
+use app\controllers\AuthController;
 
 $requestUri = $_SERVER['REQUEST_URI'];
 
@@ -11,17 +12,17 @@ switch ($requestUri) {
     case '':
     case '/':
     case '/home':
-        include __DIR__ . '/assets/views/main/homepage.html';
+        include __DIR__ . '/assets/views/main/homepage.php';
         break;
     case '/about': 
-        include __DIR__ . '/assets/views/main/about.html'; 
+        include __DIR__ . '/assets/views/main/about.php'; 
         break; 
     case '/projects': 
-        $controller = new ProjectsController(); 
-        $controller->index(); 
-        break; 
+        $controller = new ProjectsController();
+        $controller->renderProjectsPage(); 
+        break;
     case '/contact': 
-        include __DIR__ . '/assets/views/main/contact.html'; 
+        include __DIR__ . '/assets/views/main/contact.php'; 
         break; 
     case '/users/profile':
         include __DIR__ . '/../public/assets/views/users/usersView.html';
@@ -60,10 +61,6 @@ switch ($requestUri) {
                 echo json_encode(['success' => false, 'message' => 'Method not allowed.']);
             }
             break;
-        
-        
-        
-
     case '/chat':
         error_log("Chat route accessed");
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -90,23 +87,56 @@ switch ($requestUri) {
             echo json_encode(['error' => 'An error occurred while processing your request', 'details' => $e->getMessage()]);
         }
         break;
-
     case '/api/projects':
         $controller = new ProjectsController();
         $controller->index();
         break;
-    case '/api/projects/create':
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $controller = new ProjectsController();
-            $controller->store(); 
-        } else {
-            http_response_code(405);
-            echo json_encode(['error' => 'Only POST requests are allowed for project creation.']);
-        }
-        break;
+        case '/login':
+            $controller = new AuthController();
+            $controller->login();
+            break;
+            case '/logout':
+                $authController = new AuthController();
+                $authController->logout();
+                break;
+            case '/register':
+                $controller = new AuthController();
+                $controller->register();
+                break;
+            
+        
+            case '/login/submit':
+                $controller = new AuthController();
+                $controller->login();
+                break;
+        
+            case '/register/submit':
+                $controller = new AuthController();
+                $controller->register();
+                break;
+            
+                case '/exclusive-projects':
+                    session_start();
+                    error_log(print_r($_SESSION, true));
+
+                    if (!isset($_SESSION['user'])) {
+                        header('Location: /login');
+                        exit;
+                    }
+            
+                    $controller = new ProjectsController();
+                    $controller->renderExclusiveProjects();
+                    break;
+                    case '/test-database':
+                            $controller = new \app\controllers\ProjectsController();
+                            $controller->testDatabase();
+                            exit;
 
     default:
         http_response_code(404);
         echo "Page not found!";
         break;
+
+
+        
 }

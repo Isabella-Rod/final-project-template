@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Isabella's Portfolio</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap">
+    <link rel="stylesheet" href="/assets/styles/homepage.css?v=1.0">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/login" class="active">Login/Register</a></li>
+        </ul>
+    </nav>
+
+    <div class="form-container">
+        <div class="tabs">
+            <button id="login-tab" class="active" onclick="showForm('login')">Login</button>
+            <button id="register-tab" onclick="showForm('register')">Register</button>
+        </div>
+
+        <form id="login-form" action="/login" method="POST">
+            <h2>Login</h2>
+            <label for="login-username">Username:</label>
+            <input type="text" id="login-username" name="username" required>
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <form id="register-form" action="/register" method="POST" style="display: none;">
+            <h2>Register</h2>
+            <label for="register-username">Username:</label>
+            <input type="text" id="register-username" name="username" required>
+            <label for="register-password">Password:</label>
+            <input type="password" id="register-password" name="password" required>
+            <button type="submit">Register</button>
+            <div id="register-error" class="error-message" style="display: none;"></div>
+        </form>
+    </div>
+
+    <footer class="site-footer">
+        <a href="https://github.com" target="_blank" rel="noopener">Github</a>
+        <a href="/cv">CV/Resume</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="/contact">Message</a>
+    </footer>
+
+    <script>
+        function showForm(form) {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    loginForm.style.display = form === 'login' ? 'block' : 'none';
+    registerForm.style.display = form === 'register' ? 'block' : 'none';
+
+    const loginTab = document.getElementById('login-tab');
+    const registerTab = document.getElementById('register-tab');
+
+    loginTab.classList.toggle('active', form === 'login');
+    registerTab.classList.toggle('active', form === 'register');
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const tab = urlParams.get('tab') || 'login'; 
+showForm(tab);
+
+
+
+document.getElementById('register-form').addEventListener('submit', async function (event) {
+    event.preventDefault(); 
+
+    const formData = new FormData(this);
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            window.location.href = result.redirect;
+        } else {
+            const errorContainer = document.getElementById('register-error');
+            errorContainer.textContent = result.message;
+            errorContainer.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Error during registration:', error);
+        const errorContainer = document.getElementById('register-error');
+        errorContainer.textContent = 'An unexpected error occurred. Please try again.';
+        errorContainer.style.display = 'block';
+    }
+});
+    </script>
+    
+    
+</body>
+</html>

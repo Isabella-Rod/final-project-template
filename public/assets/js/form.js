@@ -3,23 +3,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (contactForm) {
         contactForm.addEventListener("submit", async (event) => {
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault(); 
 
             const formData = new FormData(contactForm);
             const formObject = Object.fromEntries(formData.entries());
 
-            console.log("Form data being sent:", formObject); // Log data for debugging
+            console.log("Form data being sent:", formObject); 
 
             try {
                 const response = await fetch('/submit-contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formObject), // Send JSON data
+                    body: JSON.stringify(formObject),
                 });
 
                 const result = await response.json();
-                console.log("Server response:", result); // Debug response
-
+                console.log("Server response:", result); 
                 if (result.success) {
                     alert(result.message);
                     contactForm.reset();
